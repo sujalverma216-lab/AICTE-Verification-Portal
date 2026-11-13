@@ -1,0 +1,126 @@
+/* Login page: left half holds the form, right half holds the image section */
+.login-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;      /* 50% form | 50% image */
+  min-height: calc(100vh - 160px);     /* fills the space between header and footer */
+}
+
+/* ---- Left half: form ---- */
+.login-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: #ffffff;
+}
+.login-form {
+  width: 100%;
+  max-width: 380px;                    /* limits the width of the field boxes */
+}
+.login-form h1 { font-size: 30px; margin-bottom: 6px; }
+.login-intro { color: var(--muted); margin: 0 0 24px; }
+.login-form .field { display: block; margin-bottom: 16px; font-weight: 600; }
+.login-form .field input,
+.login-form .field select {
+  display: block;
+  width: 100%;
+  height: 42px;                      /* box height */
+  margin-top: 6px;
+  padding: 0 12px;
+  font: 400 15px var(--font-body);
+  border: 1px solid #b4bfcc;
+  border-radius: 4px;
+  background: #fff;
+}
+.login-form [aria-invalid="true"] { border-color: var(--bad); }
+.err { display: block; margin-top: 4px; color: var(--bad); font-size: 13px; font-weight: 400; }
+
+/* Password with Show/Hide inside the box */
+.pw { display: block; position: relative; }
+.pw input { padding-right: 64px; }
+.pw-toggle {
+  position: absolute;
+  right: 6px;
+  top: 6px;                          /* aligned with the input, below the label text */
+  height: 42px;
+  margin-top: -7px;
+  padding:  8px;
+  background: none;
+  border: 0;
+  color: var(--blue);
+  font: 500 13px var(--font-body);
+  cursor: pointer;
+}
+
+
+
+/* Login button: navy, green on hover */
+.btn-login {
+  width: 100%;
+  height: 44px;
+  margin-top: 6px;
+  font: 600 15px var(--font-body);
+  color: #fff;
+  background: var(--navy);
+  border: 1px solid var(--navy);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.btn-login:hover,
+.btn-login:focus-visible { background: #138808; border-color: #138808; }
+.btn-login:focus-visible { outline: 3px solid var(--saffron); outline-offset: 2px; }
+.login-note { margin: 14px 0 0; font-size: 13px; color: var(--muted); }
+
+/* ---- Right half: image section ---- */
+.login-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 32px;
+  text-align: center;
+  color: #fff;
+  background: var(--navy);
+  border-left: 4px solid var(--saffron);
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* Stack on phones and small tablets: image on top, form below */
+@media (max-width: 800px) {
+  .login-page { grid-template-columns: 1fr; }
+  .login-right { order: -1; padding: 24px 20px; border-left: 0; border-bottom: 4px solid var(--saffron); }
+}
+
+/* ---- Image slider inside the right half ---- */
+.slider { width: 100%; max-width: 460px; --slide-anim: 700ms; }
+.slider-stage { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 6px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.18); }
+.slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+/* Slides move from left to right: the next one waits on the left and slides in, the current one leaves on the right. */
+.slide.active { transform: translateX(0);     transition: transform var(--slide-anim) ease-in-out; }
+.slide.enter  { transform: translateX(-100%); transition: transform var(--slide-anim) ease-in-out; }
+.slide.exit   { transform: translateX(100%);  transition: transform var(--slide-anim) ease-in-out; }
+.slide.wait   { transform: translateX(-100%); transition: none; }
+.slider-progress { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: var(--saffron); transform-origin: left; animation: slider-fill linear forwards; }
+@keyframes slider-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.slider-caption { text-align: center; margin-top: 16px; min-height: 96px; animation: slider-in .6s ease both; }
+@keyframes slider-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.slider-caption h2 { color: #fff; font-size: 22px; margin: 0 0 6px; }
+.slider-caption p { color: #c5d3e4; max-width: 380px; margin: 0 auto; }
+.slider-controls { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 10px; }
+.slider-dots { display: flex; gap: 8px; }
+.slider-dots button { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 1px solid #fff; background: transparent; cursor: pointer; }
+.slider-dots button.on { background: var(--saffron); border-color: var(--saffron); }
+.slider-arrow { width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 1px solid #8fa6c2; background: transparent; color: #fff; font-size: 20px; line-height: 1; cursor: pointer; }
+.slider-play { font-size: 11px; margin-left: 6px; }
+.slider-arrow:hover { background: rgba(255,255,255,.15); }
+.slider button:focus-visible { outline: 3px solid var(--saffron); outline-offset: 2px; }
+.slider-empty { color: #c5d3e4; }
+@media (prefers-reduced-motion: reduce) {
+  .slide.active, .slide.enter, .slide.exit { transition: none; }
+  .slider-caption { animation: none; }
+}
